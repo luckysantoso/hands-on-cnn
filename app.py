@@ -28,6 +28,10 @@ with st.spinner("Memuat data dan model..."):
     batch_size = st.sidebar.slider("Batch size", 8, 64, 32)
     train_loader, test_loader, train_size, test_size = load_data(batch_size)
     model_path = os.path.join(os.getcwd(), "models", "model_cnn.pth")
+    # Cek keberadaan file model
+    if not os.path.exists(model_path):
+        st.error(f"File model tidak ditemukan di path: {model_path}")
+        st.stop()
     model, device = load_model(model_path)
 
 # Sidebar info
@@ -41,7 +45,7 @@ with col1:
     uploaded = st.file_uploader("Pilih gambar (.png, .jpg)", type=["png", "jpg", "jpeg"])
     if uploaded:
         img = Image.open(uploaded).convert("RGB")
-        st.image(img, caption="Gambar yang diunggah", use_container_width =True)
+        st.image(img, caption="Gambar yang diunggah", use_container_width=True)
 
 with col2:
     if uploaded:
